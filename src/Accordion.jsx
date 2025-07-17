@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 export default function Accordion() {
-    const [open, useOpen] = useState()
+    const [open, setOpen] = useState(null)
 
 
     const language = [
@@ -38,8 +38,9 @@ export default function Accordion() {
     ]
 
 
-    function handleClick() {
+    function handleClick(index) {
         console.log("CLICK")
+        setOpen(index)
     }
 
 
@@ -48,16 +49,25 @@ export default function Accordion() {
     return (
         <div className="container d-flex gap-3 mt-4">
             {
-                language.map((item) => {
-                    return(
-                    <div className="accordion-item">
-                        <button type="button" class="btn btn-primary" >
-                            {item.title}
-                        </button>
+                language.map((item,index) => {
+                    return (
+                        <div key={index} className="d-flex flex-column align-items">
+                            <div className="accordion-item">
+                            <button onClick={() => handleClick(index)} type="button" className= {`btn ${open === index ? 'btn-warning' : 'btn-primary'}`} >
+                                {item.title}
+                            </button>
+                            </div>
+                            {open === index && <div className="card mt-3">
+                                <div className="card-body">
+                                    <h5 className="card-title">{item.title}</h5>
+                                    <p className="card-text">{item.description}</p>
+                                </div>
+                            </div>}
 
 
-                    </div>
-                )})
+                        </div>
+                    )
+                })
             }
         </div>
     )
